@@ -1,4 +1,5 @@
 import os
+import sys
 import glob
 import shutil
 import pandas as pd
@@ -39,14 +40,13 @@ class FileHydra:
             filename=filename.split(olddir+'\\')[1]
             
             self.move_file(filename,olddir,newdir)
-            #path="move "+olddir+"\\"+filename+" "+newdir#+"\\"+filename
-            #print(path)
-            #os.system(path)
         else:
             print("No files found")
         
     
     def move_file(self,filename,olddir,newdir):
+
+        move_cmd = "mv" if sys.platform in ["linux", "darwin"] else "move"
         
         try:
             os.mkdir(newdir)
@@ -56,9 +56,9 @@ class FileHydra:
         
         
         if olddir in filename:
-            path = f'move "{filename}" "{newdir}"'
+            path = f'{move_cmd} "{filename}" "{newdir}"'
         else:
-            path = f'move "{os.path.join(olddir, filename)}" "{newdir}"'
+            path = f'{move_cmd} "{os.path.join(olddir, filename)}" "{newdir}"'
         print(path)
         os.system(path)
         
